@@ -1,8 +1,195 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ŞRK-1 MOBILE</title>
-<h1>en yeni sürümlere ulaşmak için: https://srk-ai.vercel.app<h1>
-<h1>bu sürüm kullanıma kapatılmıştır<h1>
+<title>YS Chat</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,Arial,sans-serif;
+}
+
+body{
+  background:#0f172a;
+  color:white;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  width:95%;
+  max-width:900px;
+  height:90vh;
+  background:#111827;
+  border:1px solid #1f2937;
+  border-radius:24px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 0 40px rgba(0,0,0,.4);
+}
+
+.header{
+  padding:20px;
+  background:#1e293b;
+  border-bottom:1px solid #334155;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:700;
+}
+
+.login{
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+input{
+  background:#1f2937;
+  border:none;
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  outline:none;
+}
+
+button{
+  background:#3b82f6;
+  color:white;
+  border:none;
+  padding:14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.chat{
+  display:none;
+  flex:1;
+  flex-direction:column;
+}
+
+.topbar{
+  padding:15px;
+  background:#1e293b;
+  border-bottom:1px solid #334155;
+}
+
+.messages{
+  flex:1;
+  overflow:auto;
+  padding:20px;
+}
+
+.message{
+  background:#2563eb;
+  width:fit-content;
+  max-width:75%;
+  padding:12px 16px;
+  border-radius:16px;
+  margin-bottom:10px;
+}
+
+.bottom{
+  display:flex;
+  gap:10px;
+  padding:15px;
+  border-top:1px solid #334155;
+}
+
+.bottom input{
+  flex:1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="header">
+    <div class="logo">💬 YS Chat</div>
+  </div>
+
+  <div class="login" id="login">
+    <input id="username" placeholder="Kullanıcı adı">
+    <button onclick="createAccount()">Giriş Yap</button>
+  </div>
+
+  <div class="chat" id="chat">
+
+    <div class="topbar">
+      ID: <span id="userid"></span>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="bottom">
+      <input id="messageInput" placeholder="Mesaj yaz...">
+      <button onclick="sendMessage()">Gönder</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+let userId;
+
+function createAccount(){
+  const username =
+    document.getElementById("username").value.trim();
+
+  if(!username) return;
+
+  userId =
+    "YS-" +
+    Math.floor(Math.random()*1000000);
+
+  localStorage.setItem("ys_id", userId);
+
+  document.getElementById("userid").innerText =
+    userId;
+
+  document.getElementById("login").style.display =
+    "none";
+
+  document.getElementById("chat").style.display =
+    "flex";
+}
+
+function sendMessage(){
+  const input =
+    document.getElementById("messageInput");
+
+  if(!input.value.trim()) return;
+
+  const div =
+    document.createElement("div");
+
+  div.className = "message";
+  div.textContent = input.value;
+
+  document
+    .getElementById("messages")
+    .appendChild(div);
+
+  input.value = "";
+}
+</script>
+
+</body>
+</html>
