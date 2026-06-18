@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iPhone 14 Pro Dynamic Island</title>
+<title>iPhone 14 Pro Dynamic Island Pro</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -12,152 +12,250 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    overflow: hidden;
 }
 
 .phone {
-    width: 320px;
-    height: 650px;
-    background: #1a1a1a;
-    border-radius: 55px;
-    padding: 12px;
-    box-shadow: 0 0 0 3px #2a2a2a;
+    width: 340px;
+    height: 700px;
+    background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
+    border-radius: 60px;
+    padding: 14px;
+    box-shadow:
+        0 50px 100px rgba(0,0,0,0.8),
+        inset 0 2px 5px rgba(255,255,255,0.1);
     position: relative;
 }
 
 .screen {
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #8b5cf6 0%, #000 50%, #3b82f6 100%);
-    border-radius: 45px;
+    background: linear-gradient(180deg, #6366f1 0%, #000 40%, #1e40af 100%);
+    border-radius: 50px;
     position: relative;
     overflow: hidden;
-    transition: background 0.5s ease;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dynamic-island {
     position: absolute;
-    top: 15px;
+    top: 18px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 35px;
+    width: 125px;
+    height: 37px;
     background: #000;
-    border-radius: 20px;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 22px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 0 12px;
+    gap: 10px;
+    padding: 0 14px;
     cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
 }
 
 .dynamic-island.expanded {
-    width: 280px;
-    height: 60px;
-    border-radius: 30px;
+    width: 295px;
+    height: 75px;
+    border-radius: 35px;
+    gap: 15px;
 }
 
-.camera-dot {
-    width: 8px;
-    height: 8px;
-    background: #1a1a1a;
-    border-radius: 50%;
+.dynamic-island::before {
+    content: '';
     position: absolute;
-    left: 35px;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
 }
 
-.sensor-dot {
-    width: 8px;
-    height: 8px;
-    background: #1a1a1a;
+.camera-punch {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, #000 30%, #1a1a1a 70%);
     border-radius: 50%;
     position: absolute;
-    left: 50px;
+    left: 38px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.sensor-punch {
+    width: 6px;
+    height: 6px;
+    background: #0a0a0a;
+    border-radius: 50%;
+    position: absolute;
+    left: 55px;
+}
+
+.island-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+}
+
+.dynamic-island.expanded.island-icon {
+    transform: scale(1.2);
 }
 
 .island-content {
     color: white;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 500;
     opacity: 0;
-    transition: opacity 0.3s;
+    transform: translateY(5px);
+    transition: all 0.4s 0.1s;
     white-space: nowrap;
+    letter-spacing: -0.5px;
 }
 
-.dynamic-island.expanded .island-content {
+.dynamic-island.expanded.island-content {
     opacity: 1;
+    transform: translateY(0);
 }
 
-.progress-bar {
+.music-controls {
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.4s 0.15s;
+}
+
+.dynamic-island.expanded.music-controls {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.control-btn {
+    width: 24px;
+    height: 24px;
+    fill: white;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.control-btn:active {
+    transform: scale(0.85);
+}
+
+.progress-container {
     position: absolute;
-    bottom: 8px;
+    bottom: 10px;
     left: 15px;
     right: 15px;
-    height: 3px;
-    background: #333;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
     border-radius: 2px;
     overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s 0.2s;
+}
+
+.dynamic-island.expanded.progress-container {
+    opacity: 1;
 }
 
 .progress {
     height: 100%;
-    background: #8b5cf6;
+    background: linear-gradient(90deg, #8b5cf6, #3b82f6);
     width: 0%;
-    transition: width 0.1s linear;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
 }
 
 .color-picker {
     position: absolute;
-    bottom: 40px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 12px;
+    gap: 15px;
 }
 
 .color-dot {
-    width: 35px;
-    height: 35px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     cursor: pointer;
-    border: 3px solid transparent;
-    transition: transform 0.2s;
+    border: 3px solid rgba(255,255,255,0.2);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
 }
 
-.color-dot:active {
-    transform: scale(0.9);
+.color-dot:hover {
+    transform: scale(1.15);
 }
 
 .color-dot.active {
     border-color: white;
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
 }
 
-.color-dot:nth-child(1) { background: linear-gradient(135deg, #8b5cf6, #3b82f6); }
-.color-dot:nth-child(2) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-.color-dot:nth-child(3) { background: linear-gradient(135deg, #10b981, #3b82f6); }
-.color-dot:nth-child(4) { background: linear-gradient(135deg, #6b7280, #1f2937); }
+.color-dot:nth-child(1) { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+.color-dot:nth-child(2) { background: linear-gradient(135deg, #f59e0b, #dc2626); }
+.color-dot:nth-child(3) { background: linear-gradient(135deg, #10b981, #0ea5e9); }
+.color-dot:nth-child(4) { background: linear-gradient(135deg, #4b5563, #111827); }
 
-.music-icon {
-    width: 20px;
-    height: 20px;
-    fill: #8b5cf6;
-}
-
-.red-line {
+.time {
     position: absolute;
-    width: 2px;
-    height: 200px;
-    background: red;
-    left: 50%;
     top: 60px;
+    left: 50%;
     transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
+    color: white;
+    font-size: 48px;
+    font-weight: 200;
+    letter-spacing: -2px;
 }
 
-.red-line.show {
+.date {
+    position: absolute;
+    top: 115px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.notification {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(30,30,30,0.8);
+    backdrop-filter: blur(20px);
+    padding: 12px 18px;
+    border-radius: 16px;
+    color: white;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.4s;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.notification.show {
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.dynamic-island.pulse {
+    animation: pulse 0.3s;
 }
 </style>
 </head>
@@ -165,25 +263,43 @@ body {
 
 <div class="phone">
     <div class="screen" id="screen">
+        <div class="time" id="time">09:41</div>
+        <div class="date" id="date">Pazartesi, 18 Nisan</div>
+
+        <div class="notification" id="notification">Dynamic Island aktif</div>
+
         <div class="dynamic-island" id="island">
-            <div class="camera-dot"></div>
-            <div class="sensor-dot"></div>
-            <svg class="music-icon" viewBox="0 0 24 24">
+            <div class="camera-punch"></div>
+            <div class="sensor-punch"></div>
+
+            <svg class="island-icon" viewBox="0 0 24 24" fill="white">
                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
             </svg>
-            <div class="island-content" id="islandText">Şarkı Çalıyor</div>
-            <div class="progress-bar">
+
+            <div class="island-content" id="islandText">YS Music</div>
+
+            <div class="music-controls">
+                <svg class="control-btn" viewBox="0 0 24 24" fill="white">
+                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+                <svg class="control-btn" viewBox="0 0 24 24" fill="white">
+                    <path d="M10 9v6l5-3z"/>
+                </svg>
+                <svg class="control-btn" viewBox="0 0 24 24" fill="white">
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+            </div>
+
+            <div class="progress-container">
                 <div class="progress" id="progress"></div>
             </div>
         </div>
-        
-        <div class="red-line" id="redLine"></div>
-        
+
         <div class="color-picker">
-            <div class="color-dot active" data-color="purple"></div>
-            <div class="color-dot" data-color="orange"></div>
-            <div class="color-dot" data-color="blue"></div>
-            <div class="color-dot" data-color="gray"></div>
+            <div class="color-dot active" data-gradient="indigo"></div>
+            <div class="color-dot" data-gradient="sunset"></div>
+            <div class="color-dot" data-gradient="ocean"></div>
+            <div class="color-dot" data-gradient="dark"></div>
         </div>
     </div>
 </div>
@@ -193,56 +309,89 @@ const island = document.getElementById('island');
 const islandText = document.getElementById('islandText');
 const progress = document.getElementById('progress');
 const screen = document.getElementById('screen');
-const redLine = document.getElementById('redLine');
+const notification = document.getElementById('notification');
 const colorDots = document.querySelectorAll('.color-dot');
+const timeEl = document.getElementById('time');
+const dateEl = document.getElementById('date');
 
 let expanded = false;
 let progressValue = 0;
+let animationId;
+
+// Saat güncelleme
+function updateTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    timeEl.textContent = `${hours}:${minutes}`;
+
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    dateEl.textContent = now.toLocaleDateString('tr-TR', options);
+}
+updateTime();
+setInterval(updateTime, 60000);
 
 // Dynamic Island tıklama
 island.addEventListener('click', () => {
-    expanded = !expanded;
+    expanded =!expanded;
     island.classList.toggle('expanded');
-    
+    island.classList.add('pulse');
+    setTimeout(() => island.classList.remove('pulse'), 300);
+
     if (expanded) {
         islandText.textContent = 'Dynamic Music';
-        redLine.classList.add('show');
+        showNotification('Dynamic Island genişletildi');
         animateProgress();
     } else {
-        islandText.textContent = 'Şarkı Çalıyor';
-        redLine.classList.remove('show');
+        islandText.textContent = 'YS Music';
+        cancelAnimationFrame(animationId);
         progressValue = 0;
         progress.style.width = '0%';
+        showNotification('Dynamic Island küçültüldü');
     }
 });
+
+// Bildirim göster
+function showNotification(text) {
+    notification.textContent = text;
+    notification.classList.add('show');
+    setTimeout(() => notification.classList.remove('show'), 2000);
+}
 
 // Renk değiştirme
 colorDots.forEach(dot => {
     dot.addEventListener('click', () => {
         colorDots.forEach(d => d.classList.remove('active'));
         dot.classList.add('active');
-        
-        const color = dot.dataset.color;
-        if (color === 'purple') {
-            screen.style.background = 'linear-gradient(180deg, #8b5cf6 0%, #000 50%, #3b82f6 100%)';
-        } else if (color === 'orange') {
-            screen.style.background = 'linear-gradient(180deg, #f59e0b 0%, #000 50%, #ef4444 100%)';
-        } else if (color === 'blue') {
-            screen.style.background = 'linear-gradient(180deg, #3b82f6 0%, #000 50%, #10b981 100%)';
-        } else {
-            screen.style.background = 'linear-gradient(180deg, #6b7280 0%, #000 50%, #1f2937 100%)';
-        }
+
+        const gradient = dot.dataset.gradient;
+        const gradients = {
+            indigo: 'linear-gradient(180deg, #6366f1 0%, #000 40%, #1e40af 100%)',
+            sunset: 'linear-gradient(180deg, #f59e0b 0%, #000 40%, #dc2626 100%)',
+            ocean: 'linear-gradient(180deg, #10b981 0%, #000 40%, #0ea5e9 100%)',
+            dark: 'linear-gradient(180deg, #4b5563 0%, #000 40%, #111827 100%)'
+        };
+        screen.style.background = gradients[gradient];
     });
 });
 
 // Progress animasyonu
 function animateProgress() {
     if (!expanded) return;
-    progressValue += 0.5;
+    progressValue += 0.3;
     if (progressValue > 100) progressValue = 0;
     progress.style.width = progressValue + '%';
-    requestAnimationFrame(animateProgress);
+    animationId = requestAnimationFrame(animateProgress);
 }
+
+// Kontrol butonları
+document.querySelectorAll('.control-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        btn.style.transform = 'scale(0.8)';
+        setTimeout(() => btn.style.transform = 'scale(1)', 150);
+    });
+});
 </script>
 
 </body>
