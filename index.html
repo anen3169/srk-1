@@ -16,13 +16,12 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
 }
 
 body{
-height:100vh;
-overflow:hidden;
 background:#000;
 color:#fff;
+overflow:hidden;
 }
 
-/* BACKGROUND ANIM */
+/* BACKGROUND */
 .bg{
 position:absolute;
 inset:0;
@@ -34,7 +33,7 @@ position:absolute;
 width:650px;
 height:650px;
 filter:blur(160px);
-opacity:.30;
+opacity:.28;
 animation: float 10s ease-in-out infinite;
 }
 
@@ -48,21 +47,24 @@ animation: float 10s ease-in-out infinite;
 100%{transform:translateY(0) scale(1)}
 }
 
-/* MAIN */
-.container{
-position:relative;
-z-index:2;
-height:100vh;
-display:flex;
-flex-direction:column;
+/* SCREENS */
+.screen{
+position:absolute;
+inset:0;
+display:none;
 align-items:center;
 justify-content:center;
-text-align:center;
-animation: fadeIn .8s ease-out;
+flex-direction:column;
+transition:.5s;
+}
+
+.active{
+display:flex;
+animation: fadeIn .6s ease;
 }
 
 @keyframes fadeIn{
-from{opacity:0;transform:scale(1.03)}
+from{opacity:0;transform:scale(1.02)}
 to{opacity:1;transform:scale(1)}
 }
 
@@ -70,12 +72,11 @@ to{opacity:1;transform:scale(1)}
 .logo{
 font-size:78px;
 font-weight:800;
-letter-spacing:-3px;
 background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e,#f59e0b);
 background-size:300% 300%;
 -webkit-background-clip:text;
 color:transparent;
-animation: gradientMove 6s ease infinite, logoIn 1s ease-out;
+animation: gradientMove 6s ease infinite;
 }
 
 @keyframes gradientMove{
@@ -84,82 +85,49 @@ animation: gradientMove 6s ease infinite, logoIn 1s ease-out;
 100%{background-position:0% 50%}
 }
 
-@keyframes logoIn{
-from{opacity:0; transform:translateY(10px)}
-to{opacity:1; transform:translateY(0)}
-}
-
 /* SEARCH */
 .search{
-margin-top:35px;
-width:100%;
-max-width:750px;
+margin-top:30px;
 display:flex;
-padding:18px;
-border-radius:24px;
+width:80%;
+max-width:750px;
+padding:16px;
+border-radius:22px;
 background:rgba(255,255,255,0.06);
 backdrop-filter:blur(30px);
 border:1px solid rgba(255,255,255,0.08);
-box-shadow:0 0 60px rgba(0,0,0,0.6);
-animation: searchIn 1s ease-out .3s both;
-transition:.3s;
-}
-
-@keyframes searchIn{
-from{opacity:0; transform:translateY(20px)}
-to{opacity:1; transform:translateY(0)}
 }
 
 .search input{
 flex:1;
-border:none;
-outline:none;
 background:transparent;
+border:none;
 color:white;
-font-size:18px;
-padding:10px;
+font-size:17px;
+outline:none;
 }
 
 .search button{
+background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e);
 border:none;
 padding:12px 18px;
 border-radius:14px;
-cursor:pointer;
-font-weight:600;
 color:white;
-background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e);
-background-size:300% 300%;
-animation: btnMove 5s ease infinite;
-}
-
-@keyframes btnMove{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
-}
-
-.search:hover{
-transform:scale(1.01);
+cursor:pointer;
 }
 
 /* SUGGESTIONS */
 .suggestions{
-margin-top:25px;
+margin-top:20px;
 display:flex;
-flex-wrap:wrap;
 gap:10px;
+flex-wrap:wrap;
 justify-content:center;
 max-width:750px;
-animation: sugIn .8s ease-out .4s both;
-}
-
-@keyframes sugIn{
-from{opacity:0; transform:translateY(10px)}
-to{opacity:1; transform:translateY(0)}
 }
 
 .sug{
-padding:10px 14px;
+padding:9px 14px;
 border-radius:999px;
 background:rgba(255,255,255,0.06);
 border:1px solid rgba(255,255,255,0.08);
@@ -173,21 +141,38 @@ transform:scale(1.08);
 background:rgba(255,255,255,0.12);
 }
 
-/* RESULTS */
-.results{
-margin-top:25px;
-width:80%;
-max-width:750px;
-max-height:45vh;
+/* RESULTS SCREEN */
+.resultsWrap{
+width:85%;
+max-width:850px;
+height:100vh;
+padding-top:60px;
 overflow:auto;
 }
 
-.card{
+.back{
+position:absolute;
+top:20px;
+left:20px;
+padding:10px 14px;
+border-radius:12px;
 background:rgba(255,255,255,0.06);
+cursor:pointer;
+border:1px solid rgba(255,255,255,0.1);
+transition:.2s;
+}
+
+.back:hover{
+transform:scale(1.05);
+}
+
+.result{
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.08);
 padding:14px;
 border-radius:16px;
 margin-bottom:12px;
-border:1px solid rgba(255,255,255,0.08);
+cursor:pointer;
 animation: cardIn .3s ease;
 }
 
@@ -196,16 +181,9 @@ from{opacity:0;transform:translateY(10px)}
 to{opacity:1;transform:translateY(0)}
 }
 
-.title{
-font-size:15px;
-font-weight:600;
-margin-bottom:6px;
-}
-
-.desc{
-font-size:13px;
-opacity:.7;
-}
+.title{font-size:15px;font-weight:600;}
+.url{font-size:12px;opacity:.5;margin-top:4px;}
+.desc{font-size:13px;opacity:.75;margin-top:6px;}
 
 </style>
 </head>
@@ -218,7 +196,8 @@ opacity:.7;
 <div class="glow g3"></div>
 </div>
 
-<div class="container">
+<!-- HOME SCREEN -->
+<div id="home" class="screen active">
 
 <div class="logo">YS</div>
 
@@ -227,17 +206,22 @@ opacity:.7;
 <button onclick="search()">Ara</button>
 </div>
 
-<!-- SUGGESTIONS -->
 <div class="suggestions">
 <div class="sug" onclick="set('youtube')">YouTube</div>
 <div class="sug" onclick="set('google')">Google</div>
 <div class="sug" onclick="set('github')">GitHub</div>
-<div class="sug" onclick="set('news')">Haberler</div>
 <div class="sug" onclick="set('chatgpt')">AI</div>
+<div class="sug" onclick="set('news')">Haberler</div>
 </div>
 
-<!-- RESULTS -->
-<div class="results" id="results"></div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="results" class="screen">
+
+<div class="back" onclick="back()">← Geri</div>
+
+<div class="resultsWrap" id="resultsBox"></div>
 
 </div>
 
@@ -247,47 +231,104 @@ function set(v){
 document.getElementById("q").value=v;
 }
 
-/* SEARCH API */
+/* SEARCH */
 async function search(){
 
 let q=document.getElementById("q").value;
 if(!q) return;
 
-document.getElementById("results").innerHTML="";
+let data=[];
 
-let url="https://api.duckduckgo.com/?q="+encodeURIComponent(q)+"&format=json&no_html=1&skip_disambig=1";
-
-let res=await fetch(url);
-let data=await res.json();
-
-let html="";
-
-if(data.AbstractText){
-html+=card(data.Heading, data.AbstractText);
+/* WIKIPEDIA */
+try{
+let w=await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(q));
+if(w.ok){
+let d=await w.json();
+if(d.extract){
+data.push({
+t:d.title,
+u:d.content_urls?.desktop?.page || "#",
+d:d.extract
+});
 }
-
-if(data.RelatedTopics){
-data.RelatedTopics.forEach(t=>{
-if(t.Text){
-html+=card(t.Text.split(" - ")[0], t.Text);
 }
+}catch(e){}
+
+/* DUCKDUCKGO */
+try{
+let r=await fetch("https://api.duckduckgo.com/?q="+encodeURIComponent(q)+"&format=json&no_html=1");
+let d=await r.json();
+
+if(d.AbstractText){
+data.push({
+t:d.Heading,
+u:d.AbstractURL || "#",
+d:d.AbstractText
 });
 }
 
-if(html===""){
-html=card("Sonuç yok","Daha spesifik bir şey dene.");
+if(d.RelatedTopics){
+d.RelatedTopics.forEach(x=>{
+if(x.Text){
+data.push({
+t:x.Text.split(" - ")[0],
+u:"#",
+d:x.Text
+});
+}
+});
+}
+}catch(e){}
+
+/* FALLBACK */
+if(data.length===0){
+data.push(
+mk("Google", q),
+mk("YouTube", q),
+mk("GitHub", q),
+mk("Wikipedia", q)
+);
 }
 
-document.getElementById("results").innerHTML=html;
+showResults(data);
 }
 
-function card(t,d){
-return `
-<div class="card">
-<div class="title">${t}</div>
-<div class="desc">${d}</div>
+function mk(t,q){
+return {
+t:t,
+u:"#",
+d:"Arama: "+q
+};
+}
+
+/* SWITCH SCREEN */
+function showResults(data){
+
+document.getElementById("home").classList.remove("active");
+document.getElementById("results").classList.add("active");
+
+let html="";
+
+data.forEach(x=>{
+html+=`
+<div class="result" onclick="openLink('${x.u}')">
+<div class="title">${x.t}</div>
+<div class="url">${x.u}</div>
+<div class="desc">${x.d}</div>
 </div>
 `;
+});
+
+document.getElementById("resultsBox").innerHTML=html;
+}
+
+function back(){
+document.getElementById("results").classList.remove("active");
+document.getElementById("home").classList.add("active");
+}
+
+function openLink(u){
+if(u && u!="#") window.location.href=u;
 }
 
 </script>
