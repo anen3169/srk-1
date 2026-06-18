@@ -2,336 +2,92 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>YS Browser</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>YS Browser</title>
 <style>
-
-/* RESET */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 20px;
+    min-height: 100vh;
 }
+.container { max-width: 700px; margin: 0 auto; }
+.header { text-align: center; margin-bottom: 40px; }
+.logo { font-size: 48px; font-weight: 700; color: #3b82f6; margin-bottom: 5px; }
+.subtitle { color: #666; font-size: 14px; }
 
-body{
-background:#000;
-color:#fff;
-overflow:hidden;
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
 }
-
-/* BACKGROUND */
-.bg{
-position:absolute;
-inset:0;
-overflow:hidden;
+.search-input {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
 }
-
-.glow{
-position:absolute;
-width:650px;
-height:650px;
-filter:blur(160px);
-opacity:.28;
-animation: float 10s ease-in-out infinite;
+.search-input:focus { border-color: #3b82f6; }
+.search-btn {
+    background: #3b82f6;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
 }
+.search-btn:hover { background: #2563eb; }
 
-.g1{background:#0071e3;top:-250px;left:-250px;}
-.g2{background:#a855f7;bottom:-250px;right:-250px;}
-.g3{background:#22c55e;top:40%;left:30%;opacity:.15;}
-
-@keyframes float{
-0%{transform:translateY(0) scale(1)}
-50%{transform:translateY(40px) scale(1.05)}
-100%{transform:translateY(0) scale(1)}
+.search-result {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #111;
+    border-radius: 8px;
+    border-left: 3px solid #3b82f6;
 }
+.result-url { color: #4ade80; font-size: 13px; margin-bottom: 4px; word-break: break-all; }
+.result-title { color: #3b82f6; font-size: 18px; margin-bottom: 6px; text-decoration: none; display: block; }
+.result-title:hover { text-decoration: underline; }
+.result-desc { color: #999; font-size: 14px; line-height: 1.6; }
 
-/* SCREENS */
-.screen{
-position:absolute;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-transition:.5s;
-}
-
-.active{
-display:flex;
-animation: fadeIn .6s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:scale(1.02)}
-to{opacity:1;transform:scale(1)}
-}
-
-/* LOGO */
-.logo{
-font-size:78px;
-font-weight:800;
-background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e,#f59e0b);
-background-size:300% 300%;
--webkit-background-clip:text;
-color:transparent;
-animation: gradientMove 6s ease infinite;
-}
-
-@keyframes gradientMove{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
-}
-
-/* SEARCH */
-.search{
-margin-top:30px;
-display:flex;
-width:80%;
-max-width:750px;
-padding:16px;
-border-radius:22px;
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(30px);
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.search input{
-flex:1;
-background:transparent;
-border:none;
-color:white;
-font-size:17px;
-outline:none;
-}
-
-.search button{
-background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e);
-border:none;
-padding:12px 18px;
-border-radius:14px;
-color:white;
-cursor:pointer;
-}
-
-/* SUGGESTIONS */
-.suggestions{
-margin-top:20px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center;
-max-width:750px;
-}
-
-.sug{
-padding:9px 14px;
-border-radius:999px;
-background:rgba(255,255,255,0.06);
-border:1px solid rgba(255,255,255,0.08);
-font-size:13px;
-cursor:pointer;
-transition:.25s;
-}
-
-.sug:hover{
-transform:scale(1.08);
-background:rgba(255,255,255,0.12);
-}
-
-/* RESULTS SCREEN */
-.resultsWrap{
-width:85%;
-max-width:850px;
-height:100vh;
-padding-top:60px;
-overflow:auto;
-}
-
-.back{
-position:absolute;
-top:20px;
-left:20px;
-padding:10px 14px;
-border-radius:12px;
-background:rgba(255,255,255,0.06);
-cursor:pointer;
-border:1px solid rgba(255,255,255,0.1);
-transition:.2s;
-}
-
-.back:hover{
-transform:scale(1.05);
-}
-
-.result{
-background:rgba(255,255,255,0.06);
-border:1px solid rgba(255,255,255,0.08);
-padding:14px;
-border-radius:16px;
-margin-bottom:12px;
-cursor:pointer;
-animation: cardIn .3s ease;
-}
-
-@keyframes cardIn{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-.title{font-size:15px;font-weight:600;}
-.url{font-size:12px;opacity:.5;margin-top:4px;}
-.desc{font-size:13px;opacity:.75;margin-top:6px;}
-
+.error { color: #ef4444; padding: 15px; background: #1a0a0a; border-radius: 8px; margin-bottom: 20px; }
 </style>
 </head>
-
 <body>
+<div class="container">
+    <div class="header">
+        <div class="logo">YS Browser</div>
+        <div class="subtitle">Canlı Web Tarayıcı</div>
+    </div>
 
-<div class="bg">
-<div class="glow g1"></div>
-<div class="glow g2"></div>
-<div class="glow g3"></div>
+    <form method="GET" action="/">
+        <div class="search-box">
+            <input type="text" name="q" class="search-input" placeholder="https://siteadi.com" value="{{ query }}">
+            <button type="submit" class="search-btn">Ara</button>
+        </div>
+    </form>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if results %}
+        {% for r in results %}
+        <div class="search-result">
+            <div class="result-url">{{ r.url }}</div>
+            <a href="{{ r.url }}" target="_blank" rel="noopener" class="result-title">{{ r.title }}</a>
+            <div class="result-desc">{{ r.desc }}</div>
+        </div>
+        {% endfor %}
+    {% endif %}
 </div>
-
-<!-- HOME SCREEN -->
-<div id="home" class="screen active">
-
-<div class="logo">YS</div>
-
-<div class="search">
-<input id="q" placeholder="Ara...">
-<button onclick="search()">Ara</button>
-</div>
-
-<div class="suggestions">
-<div class="sug" onclick="set('youtube')">YouTube</div>
-<div class="sug" onclick="set('google')">Google</div>
-<div class="sug" onclick="set('github')">GitHub</div>
-<div class="sug" onclick="set('chatgpt')">AI</div>
-<div class="sug" onclick="set('news')">Haberler</div>
-</div>
-
-</div>
-
-<!-- RESULTS SCREEN -->
-<div id="results" class="screen">
-
-<div class="back" onclick="back()">← Geri</div>
-
-<div class="resultsWrap" id="resultsBox"></div>
-
-</div>
-
-<script>
-
-function set(v){
-document.getElementById("q").value=v;
-}
-
-/* SEARCH */
-async function search(){
-
-let q=document.getElementById("q").value;
-if(!q) return;
-
-let data=[];
-
-/* WIKIPEDIA */
-try{
-let w=await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(q));
-if(w.ok){
-let d=await w.json();
-if(d.extract){
-data.push({
-t:d.title,
-u:d.content_urls?.desktop?.page || "#",
-d:d.extract
-});
-}
-}
-}catch(e){}
-
-/* DUCKDUCKGO */
-try{
-let r=await fetch("https://api.duckduckgo.com/?q="+encodeURIComponent(q)+"&format=json&no_html=1");
-let d=await r.json();
-
-if(d.AbstractText){
-data.push({
-t:d.Heading,
-u:d.AbstractURL || "#",
-d:d.AbstractText
-});
-}
-
-if(d.RelatedTopics){
-d.RelatedTopics.forEach(x=>{
-if(x.Text){
-data.push({
-t:x.Text.split(" - ")[0],
-u:"#",
-d:x.Text
-});
-}
-});
-}
-}catch(e){}
-
-/* FALLBACK */
-if(data.length===0){
-data.push(
-mk("Google", q),
-mk("YouTube", q),
-mk("GitHub", q),
-mk("Wikipedia", q)
-);
-}
-
-showResults(data);
-}
-
-function mk(t,q){
-return {
-t:t,
-u:"#",
-d:"Arama: "+q
-};
-}
-
-/* SWITCH SCREEN */
-function showResults(data){
-
-document.getElementById("home").classList.remove("active");
-document.getElementById("results").classList.add("active");
-
-let html="";
-
-data.forEach(x=>{
-html+=`
-<div class="result" onclick="openLink('${x.u}')">
-<div class="title">${x.t}</div>
-<div class="url">${x.u}</div>
-<div class="desc">${x.d}</div>
-</div>
-`;
-});
-
-document.getElementById("resultsBox").innerHTML=html;
-}
-
-function back(){
-document.getElementById("results").classList.remove("active");
-document.getElementById("home").classList.add("active");
-}
-
-function openLink(u){
-if(u && u!="#") window.location.href=u;
-}
-
-</script>
-
 </body>
 </html>
