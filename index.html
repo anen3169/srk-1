@@ -2,193 +2,227 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<title>YS Browser</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YS Chat</title>
 
 <style>
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Inter,Arial,sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
 }
 
 body{
-  background:#0f172a;
-  color:white;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+height:100vh;
+overflow:hidden;
+background:#000;
+color:#fff;
 }
 
-.card{
-  width:95%;
-  max-width:900px;
-  height:90vh;
-  background:#111827;
-  border:1px solid #1f2937;
-  border-radius:24px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 0 40px rgba(0,0,0,.4);
+/* BACKGROUND GLOWS */
+.bg{
+position:absolute;
+inset:0;
+overflow:hidden;
 }
 
-.header{
-  padding:20px;
-  background:#1e293b;
-  border-bottom:1px solid #334155;
+.glow{
+position:absolute;
+width:700px;
+height:700px;
+filter:blur(160px);
+opacity:.35;
+animation: float 10s ease-in-out infinite;
 }
 
+.glow1{background:#0071e3;top:-250px;left:-250px;}
+.glow2{background:#a855f7;bottom:-250px;right:-250px;}
+.glow3{background:#22c55e;top:40%;left:35%;width:500px;height:500px;opacity:.18;}
+
+@keyframes float{
+0%{transform:translateY(0) scale(1)}
+50%{transform:translateY(40px) scale(1.05)}
+100%{transform:translateY(0) scale(1)}
+}
+
+/* MAIN */
+.container{
+position:relative;
+z-index:2;
+height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+animation: fadeIn .8s ease-out;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:scale(1.03)}
+to{opacity:1;transform:scale(1)}
+}
+
+/* LOGO */
 .logo{
-  font-size:24px;
-  font-weight:700;
+font-size:82px;
+font-weight:800;
+letter-spacing:-3px;
+background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e,#f59e0b);
+background-size:300% 300%;
+-webkit-background-clip:text;
+color:transparent;
+animation: gradientMove 6s ease infinite;
 }
 
-.login{
-  padding:30px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+@keyframes gradientMove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
 }
 
-input{
-  background:#1f2937;
-  border:none;
-  color:white;
-  padding:14px;
-  border-radius:12px;
-  outline:none;
+.sub{
+font-size:13px;
+opacity:.4;
+margin-top:6px;
 }
 
-button{
-  background:#3b82f6;
-  color:white;
-  border:none;
-  padding:14px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:600;
+/* SEARCH */
+.search{
+margin-top:40px;
+width:100%;
+max-width:760px;
+display:flex;
+padding:18px;
+border-radius:24px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(30px);
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 0 60px rgba(0,0,0,0.6);
+transition:.3s;
 }
 
-button:hover{
-  opacity:.9;
+.search input{
+flex:1;
+border:none;
+outline:none;
+background:transparent;
+color:white;
+font-size:18px;
+padding:10px;
 }
 
-.chat{
-  display:none;
-  flex:1;
-  flex-direction:column;
+.search button{
+border:none;
+padding:12px 18px;
+border-radius:14px;
+cursor:pointer;
+font-weight:600;
+color:white;
+background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e);
+background-size:300% 300%;
+animation: btnMove 5s ease infinite;
 }
 
-.topbar{
-  padding:15px;
-  background:#1e293b;
-  border-bottom:1px solid #334155;
+@keyframes btnMove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
 }
 
-.messages{
-  flex:1;
-  overflow:auto;
-  padding:20px;
+/* SUGGESTIONS */
+.suggestions{
+margin-top:28px;
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+justify-content:center;
+max-width:760px;
 }
 
-.message{
-  background:#2563eb;
-  width:fit-content;
-  max-width:75%;
-  padding:12px 16px;
-  border-radius:16px;
-  margin-bottom:10px;
+.sug{
+padding:10px 14px;
+border-radius:999px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.08);
+font-size:13px;
+opacity:.85;
+cursor:pointer;
+transition:.25s;
+animation: sugIn .8s ease-out;
 }
 
-.bottom{
-  display:flex;
-  gap:10px;
-  padding:15px;
-  border-top:1px solid #334155;
+@keyframes sugIn{
+from{opacity:0; transform:translateY(10px)}
+to{opacity:.85; transform:translateY(0)}
 }
 
-.bottom input{
-  flex:1;
+.sug:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,0.12);
 }
+
+/* ANIMATION TOUCH */
+.search:hover{
+transform:scale(1.01);
+}
+
+.search:active{
+transform:scale(0.995);
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="bg">
+<div class="glow glow1"></div>
+<div class="glow glow2"></div>
+<div class="glow glow3"></div>
+</div>
 
-  <div class="header">
-    <div class="logo">💬 YS Chat</div>
-  </div>
+<div class="container">
 
-  <div class="login" id="login">
-    <input id="username" placeholder="Kullanıcı adı">
-    <button onclick="createAccount()">Giriş Yap</button>
-  </div>
+<div class="logo">YS</div>
+<div class="sub">Black Pro Search Experience</div>
 
-  <div class="chat" id="chat">
+<div class="search">
+<input id="q" placeholder="Ara veya URL yaz...">
+<button onclick="go()">Git</button>
+</div>
 
-    <div class="topbar">
-      ID: <span id="userid"></span>
-    </div>
-
-    <div class="messages" id="messages"></div>
-
-    <div class="bottom">
-      <input id="messageInput" placeholder="Mesaj yaz...">
-      <button onclick="sendMessage()">Gönder</button>
-    </div>
-
-  </div>
+<!-- SEARCH SUGGESTIONS -->
+<div class="suggestions">
+<div class="sug" onclick="set('google')">Google</div>
+<div class="sug" onclick="set('youtube')">YouTube</div>
+<div class="sug" onclick="set('github.com')">GitHub</div>
+<div class="sug" onclick="set('chatgpt')">AI Search</div>
+<div class="sug" onclick="set('news')">Haberler</div>
+</div>
 
 </div>
 
 <script>
-let userId;
 
-function createAccount(){
-  const username =
-    document.getElementById("username").value.trim();
-
-  if(!username) return;
-
-  userId =
-    "YS-" +
-    Math.floor(Math.random()*1000000);
-
-  localStorage.setItem("ys_id", userId);
-
-  document.getElementById("userid").innerText =
-    userId;
-
-  document.getElementById("login").style.display =
-    "none";
-
-  document.getElementById("chat").style.display =
-    "flex";
+function set(v){
+document.getElementById("q").value=v;
 }
 
-function sendMessage(){
-  const input =
-    document.getElementById("messageInput");
+function go(){
+let q=document.getElementById("q").value.trim();
+if(!q) return;
 
-  if(!input.value.trim()) return;
-
-  const div =
-    document.createElement("div");
-
-  div.className = "message";
-  div.textContent = input.value;
-
-  document
-    .getElementById("messages")
-    .appendChild(div);
-
-  input.value = "";
+if(q.startsWith("http")){
+window.location.href=q;
+return;
 }
+
+window.location.href="https://duckduckgo.com/?q="+encodeURIComponent(q);
+}
+
 </script>
 
 </body>
