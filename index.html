@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
+/* RESET */
 *{
 margin:0;
 padding:0;
@@ -20,7 +22,7 @@ background:#000;
 color:#fff;
 }
 
-/* BACKGROUND GLOWS */
+/* BACKGROUND ANIM */
 .bg{
 position:absolute;
 inset:0;
@@ -29,16 +31,16 @@ overflow:hidden;
 
 .glow{
 position:absolute;
-width:700px;
-height:700px;
+width:650px;
+height:650px;
 filter:blur(160px);
-opacity:.35;
+opacity:.30;
 animation: float 10s ease-in-out infinite;
 }
 
-.glow1{background:#0071e3;top:-250px;left:-250px;}
-.glow2{background:#a855f7;bottom:-250px;right:-250px;}
-.glow3{background:#22c55e;top:40%;left:35%;width:500px;height:500px;opacity:.18;}
+.g1{background:#0071e3;top:-250px;left:-250px;}
+.g2{background:#a855f7;bottom:-250px;right:-250px;}
+.g3{background:#22c55e;top:40%;left:30%;opacity:.15;}
 
 @keyframes float{
 0%{transform:translateY(0) scale(1)}
@@ -66,14 +68,14 @@ to{opacity:1;transform:scale(1)}
 
 /* LOGO */
 .logo{
-font-size:82px;
+font-size:78px;
 font-weight:800;
 letter-spacing:-3px;
 background:linear-gradient(90deg,#0071e3,#a855f7,#22c55e,#f59e0b);
 background-size:300% 300%;
 -webkit-background-clip:text;
 color:transparent;
-animation: gradientMove 6s ease infinite;
+animation: gradientMove 6s ease infinite, logoIn 1s ease-out;
 }
 
 @keyframes gradientMove{
@@ -82,17 +84,16 @@ animation: gradientMove 6s ease infinite;
 100%{background-position:0% 50%}
 }
 
-.sub{
-font-size:13px;
-opacity:.4;
-margin-top:6px;
+@keyframes logoIn{
+from{opacity:0; transform:translateY(10px)}
+to{opacity:1; transform:translateY(0)}
 }
 
 /* SEARCH */
 .search{
-margin-top:40px;
+margin-top:35px;
 width:100%;
-max-width:760px;
+max-width:750px;
 display:flex;
 padding:18px;
 border-radius:24px;
@@ -100,7 +101,13 @@ background:rgba(255,255,255,0.06);
 backdrop-filter:blur(30px);
 border:1px solid rgba(255,255,255,0.08);
 box-shadow:0 0 60px rgba(0,0,0,0.6);
+animation: searchIn 1s ease-out .3s both;
 transition:.3s;
+}
+
+@keyframes searchIn{
+from{opacity:0; transform:translateY(20px)}
+to{opacity:1; transform:translateY(0)}
 }
 
 .search input{
@@ -131,46 +138,73 @@ animation: btnMove 5s ease infinite;
 100%{background-position:0% 50%}
 }
 
+.search:hover{
+transform:scale(1.01);
+}
+
 /* SUGGESTIONS */
 .suggestions{
-margin-top:28px;
+margin-top:25px;
 display:flex;
-gap:12px;
 flex-wrap:wrap;
+gap:10px;
 justify-content:center;
-max-width:760px;
+max-width:750px;
+animation: sugIn .8s ease-out .4s both;
+}
+
+@keyframes sugIn{
+from{opacity:0; transform:translateY(10px)}
+to{opacity:1; transform:translateY(0)}
 }
 
 .sug{
 padding:10px 14px;
 border-radius:999px;
 background:rgba(255,255,255,0.06);
-backdrop-filter:blur(20px);
 border:1px solid rgba(255,255,255,0.08);
 font-size:13px;
-opacity:.85;
 cursor:pointer;
 transition:.25s;
-animation: sugIn .8s ease-out;
-}
-
-@keyframes sugIn{
-from{opacity:0; transform:translateY(10px)}
-to{opacity:.85; transform:translateY(0)}
 }
 
 .sug:hover{
-transform:scale(1.05);
+transform:scale(1.08);
 background:rgba(255,255,255,0.12);
 }
 
-/* ANIMATION TOUCH */
-.search:hover{
-transform:scale(1.01);
+/* RESULTS */
+.results{
+margin-top:25px;
+width:80%;
+max-width:750px;
+max-height:45vh;
+overflow:auto;
 }
 
-.search:active{
-transform:scale(0.995);
+.card{
+background:rgba(255,255,255,0.06);
+padding:14px;
+border-radius:16px;
+margin-bottom:12px;
+border:1px solid rgba(255,255,255,0.08);
+animation: cardIn .3s ease;
+}
+
+@keyframes cardIn{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.title{
+font-size:15px;
+font-weight:600;
+margin-bottom:6px;
+}
+
+.desc{
+font-size:13px;
+opacity:.7;
 }
 
 </style>
@@ -179,29 +213,31 @@ transform:scale(0.995);
 <body>
 
 <div class="bg">
-<div class="glow glow1"></div>
-<div class="glow glow2"></div>
-<div class="glow glow3"></div>
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+<div class="glow g3"></div>
 </div>
 
 <div class="container">
 
 <div class="logo">YS</div>
-<div class="sub">Black Pro Search Experience</div>
 
 <div class="search">
-<input id="q" placeholder="Ara veya URL yaz...">
-<button onclick="go()">Git</button>
+<input id="q" placeholder="Ara...">
+<button onclick="search()">Ara</button>
 </div>
 
-<!-- SEARCH SUGGESTIONS -->
+<!-- SUGGESTIONS -->
 <div class="suggestions">
-<div class="sug" onclick="set('google')">Google</div>
 <div class="sug" onclick="set('youtube')">YouTube</div>
-<div class="sug" onclick="set('github.com')">GitHub</div>
-<div class="sug" onclick="set('chatgpt')">AI Search</div>
+<div class="sug" onclick="set('google')">Google</div>
+<div class="sug" onclick="set('github')">GitHub</div>
 <div class="sug" onclick="set('news')">Haberler</div>
+<div class="sug" onclick="set('chatgpt')">AI</div>
 </div>
+
+<!-- RESULTS -->
+<div class="results" id="results"></div>
 
 </div>
 
@@ -211,16 +247,47 @@ function set(v){
 document.getElementById("q").value=v;
 }
 
-function go(){
-let q=document.getElementById("q").value.trim();
+/* SEARCH API */
+async function search(){
+
+let q=document.getElementById("q").value;
 if(!q) return;
 
-if(q.startsWith("http")){
-window.location.href=q;
-return;
+document.getElementById("results").innerHTML="";
+
+let url="https://api.duckduckgo.com/?q="+encodeURIComponent(q)+"&format=json&no_html=1&skip_disambig=1";
+
+let res=await fetch(url);
+let data=await res.json();
+
+let html="";
+
+if(data.AbstractText){
+html+=card(data.Heading, data.AbstractText);
 }
 
-window.location.href="https://duckduckgo.com/?q="+encodeURIComponent(q);
+if(data.RelatedTopics){
+data.RelatedTopics.forEach(t=>{
+if(t.Text){
+html+=card(t.Text.split(" - ")[0], t.Text);
+}
+});
+}
+
+if(html===""){
+html=card("Sonuç yok","Daha spesifik bir şey dene.");
+}
+
+document.getElementById("results").innerHTML=html;
+}
+
+function card(t,d){
+return `
+<div class="card">
+<div class="title">${t}</div>
+<div class="desc">${d}</div>
+</div>
+`;
 }
 
 </script>
