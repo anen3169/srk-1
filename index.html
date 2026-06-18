@@ -3,91 +3,247 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YS Browser</title>
+<title>iPhone 14 Pro Dynamic Island</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    background: #0a0a0a;
-    color: #e0e0e0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    padding: 20px;
-    min-height: 100vh;
-}
-.container { max-width: 700px; margin: 0 auto; }
-.header { text-align: center; margin-bottom: 40px; }
-.logo { font-size: 48px; font-weight: 700; color: #3b82f6; margin-bottom: 5px; }
-.subtitle { color: #666; font-size: 14px; }
-
-.search-box {
+    background: #000;
     display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
-.search-input {
-    flex: 1;
+
+.phone {
+    width: 320px;
+    height: 650px;
     background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 14px 20px;
-    color: #fff;
-    font-size: 16px;
-    outline: none;
+    border-radius: 55px;
+    padding: 12px;
+    box-shadow: 0 0 0 3px #2a2a2a;
+    position: relative;
 }
-.search-input:focus { border-color: #3b82f6; }
-.search-btn {
-    background: #3b82f6;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 28px;
-    color: white;
-    font-weight: 600;
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #8b5cf6 0%, #000 50%, #3b82f6 100%);
+    border-radius: 45px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+.dynamic-island {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 35px;
+    background: #000;
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 12px;
     cursor: pointer;
-    font-size: 16px;
 }
-.search-btn:hover { background: #2563eb; }
 
-.search-result {
-    margin-bottom: 25px;
-    padding: 15px;
-    background: #111;
-    border-radius: 8px;
-    border-left: 3px solid #3b82f6;
+.dynamic-island.expanded {
+    width: 280px;
+    height: 60px;
+    border-radius: 30px;
 }
-.result-url { color: #4ade80; font-size: 13px; margin-bottom: 4px; word-break: break-all; }
-.result-title { color: #3b82f6; font-size: 18px; margin-bottom: 6px; text-decoration: none; display: block; }
-.result-title:hover { text-decoration: underline; }
-.result-desc { color: #999; font-size: 14px; line-height: 1.6; }
 
-.error { color: #ef4444; padding: 15px; background: #1a0a0a; border-radius: 8px; margin-bottom: 20px; }
+.camera-dot {
+    width: 8px;
+    height: 8px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    position: absolute;
+    left: 35px;
+}
+
+.sensor-dot {
+    width: 8px;
+    height: 8px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    position: absolute;
+    left: 50px;
+}
+
+.island-content {
+    color: white;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.dynamic-island.expanded .island-content {
+    opacity: 1;
+}
+
+.progress-bar {
+    position: absolute;
+    bottom: 8px;
+    left: 15px;
+    right: 15px;
+    height: 3px;
+    background: #333;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: #8b5cf6;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.color-picker {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+}
+
+.color-dot {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s;
+}
+
+.color-dot:active {
+    transform: scale(0.9);
+}
+
+.color-dot.active {
+    border-color: white;
+}
+
+.color-dot:nth-child(1) { background: linear-gradient(135deg, #8b5cf6, #3b82f6); }
+.color-dot:nth-child(2) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.color-dot:nth-child(3) { background: linear-gradient(135deg, #10b981, #3b82f6); }
+.color-dot:nth-child(4) { background: linear-gradient(135deg, #6b7280, #1f2937); }
+
+.music-icon {
+    width: 20px;
+    height: 20px;
+    fill: #8b5cf6;
+}
+
+.red-line {
+    position: absolute;
+    width: 2px;
+    height: 200px;
+    background: red;
+    left: 50%;
+    top: 60px;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.red-line.show {
+    opacity: 1;
+}
 </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="logo">YS Browser</div>
-        <div class="subtitle">Canlı Web Tarayıcı</div>
+
+<div class="phone">
+    <div class="screen" id="screen">
+        <div class="dynamic-island" id="island">
+            <div class="camera-dot"></div>
+            <div class="sensor-dot"></div>
+            <svg class="music-icon" viewBox="0 0 24 24">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+            <div class="island-content" id="islandText">Şarkı Çalıyor</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+        
+        <div class="red-line" id="redLine"></div>
+        
+        <div class="color-picker">
+            <div class="color-dot active" data-color="purple"></div>
+            <div class="color-dot" data-color="orange"></div>
+            <div class="color-dot" data-color="blue"></div>
+            <div class="color-dot" data-color="gray"></div>
+        </div>
     </div>
-
-    <form method="GET" action="/">
-        <div class="search-box">
-            <input type="text" name="q" class="search-input" placeholder="https://siteadi.com" value="{{ query }}">
-            <button type="submit" class="search-btn">Ara</button>
-        </div>
-    </form>
-
-    {% if error %}
-    <div class="error">{{ error }}</div>
-    {% endif %}
-
-    {% if results %}
-        {% for r in results %}
-        <div class="search-result">
-            <div class="result-url">{{ r.url }}</div>
-            <a href="{{ r.url }}" target="_blank" rel="noopener" class="result-title">{{ r.title }}</a>
-            <div class="result-desc">{{ r.desc }}</div>
-        </div>
-        {% endfor %}
-    {% endif %}
 </div>
+
+<script>
+const island = document.getElementById('island');
+const islandText = document.getElementById('islandText');
+const progress = document.getElementById('progress');
+const screen = document.getElementById('screen');
+const redLine = document.getElementById('redLine');
+const colorDots = document.querySelectorAll('.color-dot');
+
+let expanded = false;
+let progressValue = 0;
+
+// Dynamic Island tıklama
+island.addEventListener('click', () => {
+    expanded = !expanded;
+    island.classList.toggle('expanded');
+    
+    if (expanded) {
+        islandText.textContent = 'Dynamic Music';
+        redLine.classList.add('show');
+        animateProgress();
+    } else {
+        islandText.textContent = 'Şarkı Çalıyor';
+        redLine.classList.remove('show');
+        progressValue = 0;
+        progress.style.width = '0%';
+    }
+});
+
+// Renk değiştirme
+colorDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+        colorDots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        
+        const color = dot.dataset.color;
+        if (color === 'purple') {
+            screen.style.background = 'linear-gradient(180deg, #8b5cf6 0%, #000 50%, #3b82f6 100%)';
+        } else if (color === 'orange') {
+            screen.style.background = 'linear-gradient(180deg, #f59e0b 0%, #000 50%, #ef4444 100%)';
+        } else if (color === 'blue') {
+            screen.style.background = 'linear-gradient(180deg, #3b82f6 0%, #000 50%, #10b981 100%)';
+        } else {
+            screen.style.background = 'linear-gradient(180deg, #6b7280 0%, #000 50%, #1f2937 100%)';
+        }
+    });
+});
+
+// Progress animasyonu
+function animateProgress() {
+    if (!expanded) return;
+    progressValue += 0.5;
+    if (progressValue > 100) progressValue = 0;
+    progress.style.width = progressValue + '%';
+    requestAnimationFrame(animateProgress);
+}
+</script>
+
 </body>
 </html>
