@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kumru AI</title>
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Kumru AI" />
-    <meta property="og:description" content="Projeleriniz için AI destekli sohbet asistanı" />
-    <meta property="og:image" content="http://ec2-3-249-6-157.eu-west-1.compute.amazonaws.com/logo_light.png" />
-    <meta property="og:url" content="http://ec2-3-249-6-157.eu-west-1.compute.amazonaws.com/" />
-    <meta property="og:site_name" content="Kumru AI" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Kumru AI" />
-    <meta name="twitter:description" content="Projeleriniz için AI destekli sohbet asistanı" />
-    <meta name="twitter:image" content="http://ec2-3-249-6-157.eu-west-1.compute.amazonaws.com/logo_light.png" />
-    <meta name="twitter:url" content="http://ec2-3-249-6-157.eu-west-1.compute.amazonaws.com/" />
-
-    <!-- Additional meta tags for better SEO -->
-    <meta name="description" content="Projeleriniz için AI destekli sohbet asistanı" />
-    <meta name="keywords" content="AI, yapay zeka, sohbet, asistan, kumru" />
-
-    <!-- Cloudflare Turnstile (bot check that gates the session token) -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script type="module" crossorigin src="/assets/index-0532e6f0.js"></script>
-    <link rel="stylesheet" href="/assets/index-ce4faaa8.css">
-  </head>
-  <body>
-    <div id="root"></div>
-
-  </body>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Merhaba Animasyonu</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      margin: 0;
+    }
+    h1 {
+      font-size: 5em;
+      font-family: 'Arial Black', sans-serif;
+      color: #fff;
+      text-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff, 0 0 60px #00f0ff;
+      animation: spin 5s infinite linear, glow 2s infinite alternate;
+      transform-style: preserve-3d;
+    }
+    @keyframes spin {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #00f0ff; }
+      to { text-shadow: 0 0 40px #ff00ff, 0 0 60px #ff00ff; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Merhaba</h1>
+</body>
 </html>
