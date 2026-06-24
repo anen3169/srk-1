@@ -1,36 +1,77 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>3D Merhaba Animasyonu</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      margin: 0;
-    }
-    h1 {
-      font-size: 5em;
-      font-family: 'Arial Black', sans-serif;
-      color: #fff;
-      text-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff, 0 0 60px #00f0ff;
-      animation: spin 5s infinite linear, glow 2s infinite alternate;
-      transform-style: preserve-3d;
-    }
-    @keyframes spin {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(360deg); }
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 20px #00f0ff; }
-      to { text-shadow: 0 0 40px #ff00ff, 0 0 60px #ff00ff; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Merhaba</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #222;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            perspective: 1000px; /* 3D efekti için perspektif */
+        }
+
+        .container {
+            position: relative;
+            transform-style: preserve-3d; /* Çocuk elementlerin 3D dönüşümünü koru */
+            transform: rotateX(0deg) rotateY(0deg); /* Başlangıç dönüşü */
+            animation: rotateText 10s infinite linear; /* Sürekli dönüş animasyonu */
+        }
+
+        .text-3d {
+            font-size: 5em;
+            color: #fff;
+            text-shadow: 
+                1px 1px 0 #000,
+                2px 2px 0 #000,
+                3px 3px 0 #000,
+                4px 4px 0 #000,
+                5px 5px 0 #000,
+                6px 6px 0 #000,
+                7px 7px 0 #000,
+                8px 8px 0 #000,
+                9px 9px 0 #000,
+                10px 10px 0 #000,
+                11px 11px 0 #000,
+                12px 12px 0 #000,
+                13px 13px 0 #000,
+                14px 14px 0 #000,
+                15px 15px 0 #000,
+                16px 16px 0 #000,
+                17px 17px 0 #000,
+                18px 18px 0 #000,
+                19px 19px 0 #000,
+                20px 20px 0 #000; /* 3D derinlik efekti için gölgeler */
+            letter-spacing: 5px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* İsteğe bağlı olarak harfleri tek tek döndürme (daha karmaşık 3D efekti için) */
+        /* .text-3d span {
+            display: inline-block;
+            transform-style: preserve-3d;
+            transform: rotateY(var(--rotation-y, 0deg)) rotateX(var(--rotation-x, 0deg));
+            transition: transform 0.5s ease;
+        } */
+
+        @keyframes rotateText {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            25% { transform: rotateX(10deg) rotateY(30deg); }
+            50% { transform: rotateX(0deg) rotateY(60deg); }
+            75% { transform: rotateX(-10deg) rotateY(30deg); }
+            100% { transform: rotateX(0deg) rotateY(0deg); }
+        }
+    </style>
 </head>
 <body>
-  <h1>Merhaba</h1>
+    <div class="container">
+        <div class="text-3d">Merhaba</div>
+    </div>
 </body>
 </html>
