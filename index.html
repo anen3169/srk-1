@@ -1,125 +1,279 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D CSS Merhaba</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #222;
-            margin: 0;
-            font-family: 'Arial Black', sans-serif;
-            overflow: hidden; /* Taşmaları gizle */
-            perspective: 1200px; /* 3D derinliği için perspektif */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Kod Asistanı</title>
 
-        .text-3d-container {
-            display: flex;
-            transform-style: preserve-3d;
-            transform: rotateX(0deg) rotateY(0deg); /* Başlangıç dönüşü */
-            animation: containerRotate 15s infinite linear; /* Tüm kelime için dönüş animasyonu */
-        }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
 
-        .text-3d-char {
-            font-size: 8em;
-            color: #fff;
-            position: relative;
-            transform-style: preserve-3d;
-            margin: 0 -5px; /* Harfler arasında hafif çakışma için */
-            transition: transform 0.5s ease-out; /* Hover efekti için geçiş */
-        }
+body{
+background:#0f172a;
+color:white;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
 
-        .text-3d-char:hover {
-            transform: translateZ(50px) rotateY(10deg); /* Hover'da öne çıkma ve dönme */
-        }
+.container{
+width:95%;
+max-width:1200px;
+height:90vh;
+background:#111827;
+border-radius:20px;
+overflow:hidden;
+display:flex;
+flex-direction:column;
+box-shadow:0 0 40px rgba(0,0,0,.5);
+}
 
-        /* Her harfin 3D yüzeylerini oluşturma */
-        .text-3d-char::before,
-        .text-3d-char::after {
-            content: attr(data-char); /* Harfin kendisini içerik olarak kullan */
-            position: absolute;
-            top: 0;
-            left: 0;
-            color: #ccc; /* Yan yüzeylerin rengi */
-            text-shadow: none; /* Yan yüzeylerde gölge olmasın */
-            transform-origin: left center; /* Dönüşüm merkezi */
-            backface-visibility: hidden; /* Arka yüzeylerin görünürlüğünü ayarla */
-        }
+.header{
+padding:20px;
+background:#1e293b;
+font-size:24px;
+font-weight:bold;
+text-align:center;
+}
 
-        /* Arka yüzey */
-        .text-3d-char::before {
-            transform: translateZ(-20px) rotateY(180deg); /* Arkaya doğru it ve ters çevir */
-            color: #888; /* Arka yüzeyin rengi */
-        }
+.chat{
+flex:1;
+overflow-y:auto;
+padding:20px;
+}
 
-        /* Sağ yüzeyler (derinlik efekti) */
-        .text-3d-char span {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform-origin: left center;
-            backface-visibility: hidden;
-            color: #aaa; /* Derinlik rengi */
-        }
+.msg{
+padding:12px;
+margin-bottom:10px;
+border-radius:12px;
+white-space:pre-wrap;
+}
 
-        /* Derinlik katmanları */
-        .text-3d-char span:nth-child(1) { transform: translateZ(-1px); }
-        .text-3d-char span:nth-child(2) { transform: translateZ(-2px); }
-        .text-3d-char span:nth-child(3) { transform: translateZ(-3px); }
-        .text-3d-char span:nth-child(4) { transform: translateZ(-4px); }
-        .text-3d-char span:nth-child(5) { transform: translateZ(-5px); }
-        .text-3d-char span:nth-child(6) { transform: translateZ(-6px); }
-        .text-3d-char span:nth-child(7) { transform: translateZ(-7px); }
-        .text-3d-char span:nth-child(8) { transform: translateZ(-8px); }
-        .text-3d-char span:nth-child(9) { transform: translateZ(-9px); }
-        .text-3d-char span:nth-child(10) { transform: translateZ(-10px); }
-        .text-3d-char span:nth-child(11) { transform: translateZ(-11px); }
-        .text-3d-char span:nth-child(12) { transform: translateZ(-12px); }
-        .text-3d-char span:nth-child(13) { transform: translateZ(-13px); }
-        .text-3d-char span:nth-child(14) { transform: translateZ(-14px); }
-        .text-3d-char span:nth-child(15) { transform: translateZ(-15px); }
-        .text-3d-char span:nth-child(16) { transform: translateZ(-16px); }
-        .text-3d-char span:nth-child(17) { transform: translateZ(-17px); }
-        .text-3d-char span:nth-child(18) { transform: translateZ(-18px); }
-        .text-3d-char span:nth-child(19) { transform: translateZ(-19px); }
-        .text-3d-char span:nth-child(20) { transform: translateZ(-20px); } /* En arkadaki katman */
+.user{
+background:#2563eb;
+}
 
+.ai{
+background:#1f2937;
+}
 
-        @keyframes containerRotate {
-            0% { transform: rotateX(10deg) rotateY(0deg); }
-            25% { transform: rotateX(10deg) rotateY(90deg); }
-            50% { transform: rotateX(10deg) rotateY(180deg); }
-            75% { transform: rotateX(10deg) rotateY(270deg); }
-            100% { transform: rotateX(10deg) rotateY(360deg); }
-        }
-    </style>
+.bottom{
+padding:15px;
+display:flex;
+gap:10px;
+background:#1e293b;
+}
+
+textarea{
+flex:1;
+height:60px;
+resize:none;
+padding:10px;
+border:none;
+border-radius:10px;
+outline:none;
+}
+
+button{
+border:none;
+padding:12px 18px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.send{
+background:#2563eb;
+color:white;
+}
+
+.copy{
+background:#10b981;
+color:white;
+}
+
+.test{
+background:#f59e0b;
+color:white;
+}
+
+iframe{
+width:100%;
+height:300px;
+border:none;
+background:white;
+}
+</style>
 </head>
 <body>
-    <div class="text-3d-container">
-        <div class="text-3d-char" data-char="M">M</div>
-        <div class="text-3d-char" data-char="e">e</div>
-        <div class="text-3d-char" data-char="r">r</div>
-        <div class="text-3d-char" data-char="h">h</div>
-        <div class="text-3d-char" data-char="a">a</div>
-        <div class="text-3d-char" data-char="b">b</div>
-        <div class="text-3d-char" data-char="a">a</div>
-    </div>
 
-    <script>
-        // Her harfe derinlik katmanlarını ekle
-        document.querySelectorAll('.text-3d-char').forEach(charElement => {
-            for (let i = 0; i < 20; i++) { // 20 katman derinlik için
-                const span = document.createElement('span');
-                span.textContent = charElement.textContent; // Harfin içeriğini kopyala
-                charElement.appendChild(span);
-            }
-        });
-    </script>
+<div class="container">
+
+<div class="header">
+🤖 AI Kod Asistanı
+</div>
+
+<div class="chat" id="chat"></div>
+
+<div class="bottom">
+<textarea id="prompt" placeholder="Bir kod iste..."></textarea>
+
+<button class="send" onclick="sendMessage()">
+Gönder
+</button>
+
+<button class="copy" onclick="copyLastCode()">
+Kopyala
+</button>
+
+<button class="test" onclick="testCode()">
+Test Et
+</button>
+</div>
+
+<iframe id="preview"></iframe>
+
+</div>
+
+<script>
+
+const API_KEY = "YOUR_GROQ_API_KEY";
+
+let lastCode = "";
+
+async function sendMessage(){
+
+const input = document.getElementById("prompt");
+const text = input.value.trim();
+
+if(!text) return;
+
+addMessage(text,"user");
+
+input.value="";
+
+const res = await fetch(
+"https://api.groq.com/openai/v1/chat/completions",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+API_KEY
+},
+body:JSON.stringify({
+
+model:"llama3-70b-8192",
+
+messages:[
+
+{
+role:"system",
+content:`
+Sen dünyanın en iyi kod öğretmenisin.
+
+Görevlerin:
+
+- Kullanıcıya kod yazmayı öğret.
+- Kodları ayrıntılı açıkla.
+- HTML, CSS, JS, Python, C++, Java öğret.
+- Modern kod üret.
+- Hataları düzelt.
+- Temiz mimari kullan.
+- Kod blokları ver.
+- Gerektiğinde tam proje oluştur.
+`
+},
+
+{
+role:"user",
+content:text
+}
+
+],
+
+temperature:0.7
+
+})
+}
+);
+
+const data = await res.json();
+
+const answer =
+data.choices?.[0]?.message?.content ||
+"Hata oluştu";
+
+addMessage(answer,"ai");
+
+extractCode(answer);
+
+}
+
+function addMessage(text,type){
+
+const chat=document.getElementById("chat");
+
+const div=document.createElement("div");
+
+div.className="msg "+type;
+
+div.textContent=text;
+
+chat.appendChild(div);
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+function extractCode(text){
+
+const match=text.match(/```(?:html)?([\s\S]*?)```/);
+
+if(match){
+
+lastCode=match[1];
+
+}
+
+}
+
+function copyLastCode(){
+
+if(!lastCode){
+
+alert("Kod bulunamadı");
+
+return;
+
+}
+
+navigator.clipboard.writeText(lastCode);
+
+alert("Kod kopyalandı");
+
+}
+
+function testCode(){
+
+if(!lastCode){
+
+alert("Test edilecek kod yok");
+
+return;
+
+}
+
+document.getElementById("preview").srcdoc=lastCode;
+
+}
+
+</script>
+
 </body>
 </html>
